@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista de Compras - DOM y JavaScript</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <!--Figueroa Facundo-Benitez Dante-->
+    </head>
+
+<body>
+
+    <div class="container my-1 my-sm-2 my-md-4 my-lg-5">
+        <h1>Lista de Compras</h1>
+        <p class="lead">El objetivo es construir una lista de compras donde se puedan agregar productos.</p>
+        <h2 class="h3">Objetivos Adicionales</h2>
+        <ol>
+            <li>Agregar funcionalidad para limpiar la lista, eliminando todos los productos.</li>
+            <li>Ordenar alfabéticamente la lista de productos.</li>
+            <li>Agregar opción para eliminar cada elemento de forma individual.</li>
+        </ol>
+
+        <!-- Card de Aplicación -->
+        <div class="card">
+            <div class="card-body">
+                <h2>Listado de Productos</h2>
+
+                <ul id="lista-productos">
+                    <li>
+                        <span>Pan</span>
+                        <button class="btn btn-link btn-sm" onclick="eliminarProducto(this)">Eliminar</button>
+                    </li>
+                </ul>
+
+                <button class="btn btn-danger" id="limpiar-lista">Limpiar Lista</button>
+                <button class="btn btn-secondary" id="ordenar-lista">Ordenar Lista</button>
+
+                <hr class="hr">
+
+                <h2>Agregar Producto</h2>
+                <form id="form-producto">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" aria-label="Nombre del Producto">
+                        <button class="btn btn-primary" type="submit">Agregar Producto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function agregarProducto(nombreProducto) {
+            const listaProductos = document.getElementById('lista-productos');
+            const nuevoItem = document.createElement('li');
+            nuevoItem.innerHTML = `<span>${nombreProducto}</span> <button class="btn btn-link btn-sm" onclick="eliminarProducto(this)">Eliminar</button>`;
+            listaProductos.appendChild(nuevoItem);
+        }
+
+        function handlerFormulario(e) {
+            e.preventDefault();
+            const input = e.target.querySelector('input');
+            const nombreProducto = input.value.trim();
+            if (nombreProducto !== "") {
+                agregarProducto(nombreProducto);
+                input.value = "";
+            }
+        }
+
+        function eliminarProducto(element) {
+            const listaProductos = document.getElementById('lista-productos');
+            const listItem = element.closest('li');
+            listaProductos.removeChild(listItem);
+        }
+
+        document.getElementById('limpiar-lista').addEventListener('click', function () {
+            const listaProductos = document.getElementById('lista-productos');
+            listaProductos.innerHTML = "";
+        });
+
+        document.getElementById('ordenar-lista').addEventListener('click', function () {
+            const listaProductos = document.getElementById('lista-productos');
+            const items = Array.from(listaProductos.children);
+            items.sort((a, b) => a.textContent.localeCompare(b.textContent));
+            listaProductos.innerHTML = "";
+            items.forEach(item => listaProductos.appendChild(item));
+        });
+
+        document.getElementById('form-producto').addEventListener('submit', handlerFormulario);
+    </script>
+</body>
+
+</html>
